@@ -33,8 +33,6 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        // Ensure each order has the user set
-        user.setOrders(user.getOrders());
         // Save User
         return jpaRepository.save(user);
     }
