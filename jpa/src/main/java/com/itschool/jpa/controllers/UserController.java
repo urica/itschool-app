@@ -1,5 +1,6 @@
 package com.itschool.jpa.controllers;
 
+import com.itschool.jpa.dtos.CreateUserDto;
 import com.itschool.jpa.models.User;
 import com.itschool.jpa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,14 @@ public class UserController {
         User savedUser = service.addUser(user);
         return ResponseEntity.ok(savedUser);
     }
+
+    @PostMapping("/create-from-dto")
+    public ResponseEntity<User> createUserFromDto(@RequestBody CreateUserDto userDto){
+        User user = service.createUserFromDto(userDto);
+        return ResponseEntity.ok(user);
+    }
+
+
 
 
 }

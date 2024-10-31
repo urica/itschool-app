@@ -1,5 +1,7 @@
 package com.itschool.jpa.services;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itschool.jpa.dtos.CreateUserDto;
 import com.itschool.jpa.models.User;
 import com.itschool.jpa.repositories.UserJpaRepository;
 import com.itschool.jpa.repositories.UserRepository;
@@ -15,6 +17,8 @@ public class UserService {
     private UserRepository repository;
     @Autowired
     private UserJpaRepository jpaRepository;
+    @Autowired
+    private ObjectMapper mapper;
 
     public Iterable<User> saveAll(List<User> users) {
         return repository.saveAll(users);
@@ -33,7 +37,15 @@ public class UserService {
     }
 
     public User addUser(User user) {
+        //        user.getOrders().forEach(o-> o.setUser(savedUser));
         // Save User
+        return jpaRepository.save(user);
+    }
+
+    public User createUserFromDto(CreateUserDto userDto) {
+//        User u = new User();
+//        u.setName(userDto.getName());...
+        User user = mapper.convertValue(userDto, User.class);
         return jpaRepository.save(user);
     }
 }

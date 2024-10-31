@@ -1,5 +1,6 @@
 package com.itschool.jpa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Order {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String product;
@@ -22,7 +23,15 @@ public class Order {
     private LocalDate orderDate;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JsonBackReference
     private User user;
+
+    public Order(String product, Double price, LocalDate orderDate, User user) {
+        this.product = product;
+        this.price = price;
+        this.orderDate = orderDate;
+        this.user = user;
+    }
 
 }
