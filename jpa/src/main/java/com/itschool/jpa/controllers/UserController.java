@@ -1,6 +1,7 @@
 package com.itschool.jpa.controllers;
 
 import com.itschool.jpa.dtos.CreateUserDto;
+import com.itschool.jpa.exceptions.UserServiceException;
 import com.itschool.jpa.models.User;
 import com.itschool.jpa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,18 +48,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user){
+    public ResponseEntity<User> addUser(@RequestBody User user) {
         User savedUser = service.addUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
     @PostMapping("/create-from-dto")
-    public ResponseEntity<User> createUserFromDto(@RequestBody CreateUserDto userDto){
-        User user = service.createUserFromDto(userDto);
+    public ResponseEntity<User> createUserFromDto(@RequestBody CreateUserDto userDto) {
+        User user = new User();
+        try {
+            user = service.createUserFromDto(userDto);
+        } catch (UserServiceException ex) {
+            System.out.println(ex.getMessage());
+            System.out.println(ex.getErrorCode());
+        }
         return ResponseEntity.ok(user);
     }
-
-
 
 
 }
