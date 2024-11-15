@@ -30,7 +30,10 @@ public class OrderService {
             User user = userOpt.get();
             order = new Order(product, price, LocalDate.now(), user);
 
-        } else System.out.println("User with id: " + userId + " not found!");
+        } else {
+            System.out.println("User with id: " + userId + " not found!");
+            return null;
+        }
 
         return orderRepository.save(order);
     }
