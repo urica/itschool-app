@@ -4,6 +4,7 @@ import com.itschool.jpa.dtos.CreateUserDto;
 import com.itschool.jpa.exceptions.UserServiceException;
 import com.itschool.jpa.models.User;
 import com.itschool.jpa.services.UserService;
+import com.itschool.jpa.services.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

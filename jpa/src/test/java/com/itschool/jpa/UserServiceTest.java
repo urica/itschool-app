@@ -7,7 +7,7 @@ import com.itschool.jpa.exceptions.UserServiceException;
 import com.itschool.jpa.models.User;
 import com.itschool.jpa.repositories.UserJpaRepository;
 import com.itschool.jpa.services.EmailService;
-import com.itschool.jpa.services.UserService;
+import com.itschool.jpa.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,7 +28,7 @@ public class UserServiceTest {
     private UserJpaRepository jpaRepository;
 
     @InjectMocks
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Mock
     private ObjectMapper mapper;
