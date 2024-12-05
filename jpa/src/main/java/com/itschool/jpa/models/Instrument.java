@@ -20,7 +20,6 @@ public class Instrument {
     private String name;
     @Column(nullable = false)
     private BigDecimal price;
-
     @Enumerated(EnumType.STRING)
     private InstrumentCategory category;
     private String manufacturer;

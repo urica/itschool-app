@@ -1,4 +1,4 @@
-package com.itschool.jpa.services;
+package com.itschool.jpa.services.impl;
 
 import com.itschool.jpa.exceptions.EmailSendingException;
 import org.springframework.beans.factory.annotation.Autowired;

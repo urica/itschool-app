@@ -7,7 +7,6 @@ import com.itschool.jpa.exceptions.UserServiceException;
 import com.itschool.jpa.models.User;
 import com.itschool.jpa.repositories.UserJpaRepository;
 import com.itschool.jpa.repositories.UserRepository;
-import com.itschool.jpa.services.EmailService;
 import com.itschool.jpa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,13 +58,13 @@ public class UserServiceImpl implements UserService {
         String subject = "Welcome to our service!";
         String body = "Dear " + savedUser.getName() + " Thank you for registration! \n your username is " + savedUser.getUsername();
 
-        try {
-            emailService.sendEmail(savedUser.getEmail(), subject, body);
-        } catch (EmailSendingException e) {
-            System.out.println(e.getMessage());
-            throw new UserServiceException("User created successfully, but failed to send welcome email!", "ERROR_ON_MAIL_SENDING");
-//            e.printStackTrace();
-        }
+//        try {
+//            emailService.sendEmail(savedUser.getEmail(), subject, body);
+//        } catch (EmailSendingException e) {
+//            System.out.println(e.getMessage());
+//            throw new UserServiceException("User created successfully, but failed to send welcome email!", "ERROR_ON_MAIL_SENDING");
+////            e.printStackTrace();
+//        }
 
         return savedUser;
     }

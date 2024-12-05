@@ -6,7 +6,7 @@ import com.itschool.jpa.exceptions.EmailSendingException;
 import com.itschool.jpa.exceptions.UserServiceException;
 import com.itschool.jpa.models.User;
 import com.itschool.jpa.repositories.UserJpaRepository;
-import com.itschool.jpa.services.EmailService;
+import com.itschool.jpa.services.impl.EmailService;
 import com.itschool.jpa.services.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

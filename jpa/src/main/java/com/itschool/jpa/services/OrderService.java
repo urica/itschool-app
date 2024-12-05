@@ -1,53 +1,12 @@
 package com.itschool.jpa.services;
 
 import com.itschool.jpa.models.Order;
-import com.itschool.jpa.models.User;
-import com.itschool.jpa.repositories.OrderRepository;
-import com.itschool.jpa.repositories.UserJpaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
+import com.itschool.jpa.models.OrderItem;
 
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
-@Service
-public class OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
-    private UserJpaRepository userRepository;
+public interface OrderService {
+    Order placeOrder(Long userId, List<OrderItem> items);
 
-    /**
-     * Places an order for a specific user
-     */
-    public Order placeOrder(Long userId, String product, Double price) {
-        Optional<User> userOpt = userRepository.findById(userId);
-        Order order = null;
-        if (userOpt.isPresent()) {
-            User user = userOpt.get();
-            order = new Order(product, price, LocalDate.now(), user);
-
-        } else {
-            System.out.println("User with id: " + userId + " not found!");
-            return null;
-        }
-
-        return orderRepository.save(order);
-    }
-
-    public List<Order> getOrdersWithPagination(Long userId, int page, int size) {
-//        int start = page == 1 ? 1 : page * size;
-//        List<Order> userOrders = orderRepository.findByUserId(userId);
-//        return userOrders.stream()
-//                .skip(start)
-//                .limit(size)
-//                .collect(Collectors.toList());
-
-        PageRequest pageRequest = PageRequest.of(page - 1, size);
-        Page<Order> orderPage = orderRepository.findByUserId(userId, pageRequest);
-        return orderPage.getContent();
-    }
+    List<Order> getOrdersWithPagination(Long userId, int page, int size);
 }
