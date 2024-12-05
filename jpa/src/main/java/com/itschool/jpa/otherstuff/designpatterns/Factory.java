@@ -1,4 +1,4 @@
-package com.itschool.jpa.designpatterns;
+package com.itschool.jpa.otherstuff.designpatterns;
 
 interface Animal {
     void makeSound();

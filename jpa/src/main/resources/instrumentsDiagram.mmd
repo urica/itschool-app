@@ -1,0 +1,188 @@
+classDiagram
+%% MODEL Layer
+    class Instrument {
+        <<Entity>>
+        +Long id
+        +String name
+        +BigDecimal price
+        +InstrumentCategory category
+        +String manufacturer
+        +Integer stockQuantity
+        -List~Review~ reviews
+        +boolean isAvailable()
+        +BigDecimal calculateDiscountedPrice()
+    }
+
+    class User {
+        <<Entity>>
+        +Long id
+        +String username
+        +String email
+        +String password
+        +UserRole role
+        -List~Order~ orders
+        +void updateProfile()
+        +boolean isAccountNonExpired()
+    }
+
+    class Order {
+        <<Entity>>
+        +Long id
+        +User user
+        +List~OrderItem~ items
+        +OrderStatus status
+        +BigDecimal totalAmount
+        +LocalDateTime orderDate
+        +void calculateTotalPrice()
+        +void updateStatus()
+    }
+
+    class Review {
+        <<Entity>>
+        +Long id
+        +User author
+        +Instrument instrument
+        +Integer rating
+        +String comment
+        +LocalDateTime reviewDate
+    }
+
+%% REPOSITORY Layer
+    class InstrumentRepository {
+        <<Interface>>
+        +List~Instrument~ findByCategory(InstrumentCategory category)
+        +List~Instrument~ findByPriceBetween(BigDecimal minPrice, BigDecimal maxPrice)
+        +List~Instrument~ findByStockQuantityGreaterThan(Integer quantity)
+    }
+
+    class UserRepository {
+        <<Interface>>
+        +Optional~User~ findByUsername(String username)
+        +Optional~User~ findByEmail(String email)
+        +boolean existsByUsername(String username)
+    }
+
+    class OrderRepository {
+        <<Interface>>
+        +List~Order~ findByUser(User user)
+        +List~Order~ findByStatus(OrderStatus status)
+    }
+
+    class ReviewRepository {
+        <<Interface>>
+        +List~Review~ findByInstrument(Instrument instrument)
+        +List~Review~ findByAuthor(User author)
+    }
+
+%% SERVICE Layer
+    class InstrumentService {
+        <<Service>>
+        -InstrumentRepository instrumentRepository
+        +List~Instrument~ getAllInstruments()
+        +Instrument getInstrumentById(Long id)
+        +Instrument createInstrument(Instrument instrument)
+        +void updateInstrumentStock(Long id, Integer quantity)
+    }
+
+    class UserService {
+        <<Service>>
+        -UserRepository userRepository
+        -PasswordEncoder passwordEncoder
+        +User registerNewUser(User user)
+        +User authenticateUser(String username, String password)
+        +void updateUserProfile(User user)
+    }
+
+    class OrderService {
+        <<Service>>
+        -OrderRepository orderRepository
+        -InstrumentService instrumentService
+        +Order createOrder(User user, List~OrderItem~ items)
+        +void processPayment(Order order)
+        +void updateOrderStatus(Long orderId, OrderStatus status)
+    }
+
+    class ReviewService {
+        <<Service>>
+        -ReviewRepository reviewRepository
+        -InstrumentService instrumentService
+        +Review addReview(User author, Long instrumentId, Review review)
+        +List~Review~ getReviewsForInstrument(Long instrumentId)
+    }
+
+%% CONTROLLER Layer
+    class InstrumentController {
+        <<RestController>>
+        -InstrumentService instrumentService
+        +ResponseEntity~List~Instrument~~ getAllInstruments()
+        +ResponseEntity~Instrument~ getInstrumentById(Long id)
+        +ResponseEntity~Instrument~ createInstrument(Instrument instrument)
+    }
+
+    class UserController {
+        <<RestController>>
+        -UserService userService
+        +ResponseEntity~User~ registerUser(User user)
+        +ResponseEntity~String~ login(LoginRequest loginRequest)
+        +ResponseEntity~User~ updateProfile(User user)
+    }
+
+    class OrderController {
+        <<RestController>>
+        -OrderService orderService
+        +ResponseEntity~Order~ createOrder(OrderRequest orderRequest)
+        +ResponseEntity~List~Order~~ getUserOrders()
+        +ResponseEntity~Order~ updateOrderStatus(Long orderId, OrderStatus status)
+    }
+
+    class ReviewController {
+        <<RestController>>
+        -ReviewService reviewService
+        +ResponseEntity~Review~ addReview(Long instrumentId, Review review)
+        +ResponseEntity~List~Review~~ getInstrumentReviews(Long instrumentId)
+    }
+
+%% Security Configuration
+    class SecurityConfig {
+        <<Configuration>>
+        +void configure(HttpSecurity http)
+        +UserDetailsService userDetailsService()
+        +PasswordEncoder passwordEncoder()
+    }
+
+%% Enums
+    class InstrumentCategory {
+        <<Enumeration>>
+        STRINGS,
+        WIND,
+        PERCUSSION,
+        KEYBOARD
+    }
+
+    class OrderStatus {
+        <<Enumeration>>
+        PENDING
+        PROCESSING
+        SHIPPED
+        DELIVERED
+        CANCELLED
+    }
+
+%% Relationships
+    User "1" -- "0..*" Order : has
+    User "1" -- "0..*" Review : writes
+    Instrument "1" -- "0..*" Review : has
+    Order "1" -- "1..*" OrderItem : contains
+
+%% Layer Dependencies
+    InstrumentController ..> InstrumentService : uses
+    InstrumentService ..> InstrumentRepository : uses
+
+    UserController ..> UserService : uses
+    UserService ..> UserRepository : uses
+
+    OrderController ..> OrderService : uses
+    OrderService ..> OrderRepository : uses
+
+    ReviewController ..> ReviewService : uses
+    ReviewService ..> ReviewRepository : uses

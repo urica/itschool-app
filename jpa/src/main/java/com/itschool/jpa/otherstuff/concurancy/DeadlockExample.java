@@ -1,4 +1,4 @@
-package com.itschool.jpa.concurancy;
+package com.itschool.jpa.otherstuff.concurancy;
 
 public class DeadlockExample {
     public static final Object RESOURCE1 = new Object();

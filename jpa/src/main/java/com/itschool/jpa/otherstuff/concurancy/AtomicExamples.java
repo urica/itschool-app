@@ -1,4 +1,4 @@
-package com.itschool.jpa.concurancy;
+package com.itschool.jpa.otherstuff.concurancy;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

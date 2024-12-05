@@ -1,4 +1,4 @@
-package com.itschool.jpa.concurancy;
+package com.itschool.jpa.otherstuff.concurancy;
 
 public class CountObjectSync {
     public static int count = 0;

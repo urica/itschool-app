@@ -1,4 +1,4 @@
-package com.itschool.jpa.solid;
+package com.itschool.jpa.otherstuff.solid;
 
 public class OPrincipleAfter {
     public static void main(String... a) {

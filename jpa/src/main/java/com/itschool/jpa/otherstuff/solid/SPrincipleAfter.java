@@ -1,4 +1,4 @@
-package com.itschool.jpa.solid;
+package com.itschool.jpa.otherstuff.solid;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

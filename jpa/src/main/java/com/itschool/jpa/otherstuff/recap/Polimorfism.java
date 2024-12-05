@@ -1,4 +1,4 @@
-package com.itschool.jpa.recap;
+package com.itschool.jpa.otherstuff.recap;
 
 public class Polimorfism {
     public static void main(String... a) {

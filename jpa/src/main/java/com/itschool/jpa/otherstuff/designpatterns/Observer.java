@@ -1,4 +1,4 @@
-package com.itschool.jpa.designpatterns;
+package com.itschool.jpa.otherstuff.designpatterns;
 
 import java.util.ArrayList;
 import java.util.List;

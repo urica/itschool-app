@@ -1,4 +1,4 @@
-package com.itschool.jpa.recap;
+package com.itschool.jpa.otherstuff.recap;
 
 public class Abstractizarea {
     public static void main(String... a) {
