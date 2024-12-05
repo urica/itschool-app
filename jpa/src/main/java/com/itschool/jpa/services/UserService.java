@@ -2,7 +2,6 @@ package com.itschool.jpa.services;
 
 import com.itschool.jpa.dtos.CreateUserDto;
 import com.itschool.jpa.models.User;
-
 import java.util.List;
 import java.util.Optional;
 

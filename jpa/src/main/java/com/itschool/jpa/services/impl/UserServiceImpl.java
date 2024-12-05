@@ -8,6 +8,7 @@ import com.itschool.jpa.models.User;
 import com.itschool.jpa.repositories.UserJpaRepository;
 import com.itschool.jpa.repositories.UserRepository;
 import com.itschool.jpa.services.EmailService;
+import com.itschool.jpa.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl {
+public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
     @Autowired
