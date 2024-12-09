@@ -2,9 +2,7 @@ package com.itschool.jpa.controllers;
 
 import com.itschool.jpa.dtos.RequestOrderDto;
 import com.itschool.jpa.models.Order;
-import com.itschool.jpa.models.OrderItem;
 import com.itschool.jpa.services.OrderService;
-import com.itschool.jpa.services.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,5 +26,10 @@ public class OrderController {
     public ResponseEntity<List<Order>> ordersWithPagination(@RequestParam Long userId, @RequestParam int page, @RequestParam int size) {
         List<Order> orders = service.getOrdersWithPagination(userId, page, size);
         return ResponseEntity.ok(orders);
+    }
+
+    @PutMapping
+    public ResponseEntity<Order> cancelOrder(@RequestParam Long orderId) {
+        return ResponseEntity.ok(service.cancelOrder(orderId));
     }
 }

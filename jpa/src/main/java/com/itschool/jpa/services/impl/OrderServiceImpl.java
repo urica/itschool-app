@@ -10,6 +10,7 @@ import com.itschool.jpa.repositories.OrderRepository;
 import com.itschool.jpa.repositories.UserJpaRepository;
 import com.itschool.jpa.services.OrderService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -73,9 +74,22 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public List<Order> getOrdersWithPagination(Long userId, int page, int size) {
-
         PageRequest pageRequest = PageRequest.of(page - 1, size);
         Page<Order> orderPage = orderRepository.findByUserId(userId, pageRequest);
         return orderPage.getContent();
+    }
+
+    @Transactional
+    public Order cancelOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new EntityNotFoundException("Order was not found!"));
+
+        order.getItems().forEach(item -> {
+            Instrument instrument = item.getInstrument();
+            instrument.setStockQuantity(instrument.getStockQuantity() + item.getQuantity());
+        });
+
+        order.setStatus(OrderStatus.CANCELLED);
+        return orderRepository.save(order);
     }
 }
