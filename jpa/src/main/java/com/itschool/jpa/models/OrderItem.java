@@ -1,5 +1,6 @@
 package com.itschool.jpa.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -22,6 +23,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
+    @JsonBackReference
     private Order order;
 
     public OrderItem() {
@@ -40,8 +42,8 @@ public class OrderItem {
     public void setQuantity(Integer quantity) {
         if (quantity <= 0)
             throw new IllegalArgumentException("Quantity must be positive!");
-        if (quantity > instrument.getStockQuantity())
-            throw new IllegalStateException("Insufficient stock for this instrument!");
+//        if (quantity > instrument.getStockQuantity())
+//            throw new IllegalStateException("Insufficient stock for this instrument!");
 
         this.quantity = quantity;
     }

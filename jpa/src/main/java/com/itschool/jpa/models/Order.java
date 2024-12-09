@@ -1,6 +1,7 @@
 package com.itschool.jpa.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itschool.jpa.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class Order {
     private Long id;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<OrderItem> items;
     private LocalDate orderDate;
     @Enumerated(EnumType.STRING)

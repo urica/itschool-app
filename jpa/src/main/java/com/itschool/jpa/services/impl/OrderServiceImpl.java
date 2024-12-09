@@ -1,9 +1,11 @@
 package com.itschool.jpa.services.impl;
 
 import com.itschool.jpa.enums.OrderStatus;
+import com.itschool.jpa.models.Instrument;
 import com.itschool.jpa.models.Order;
 import com.itschool.jpa.models.OrderItem;
 import com.itschool.jpa.models.User;
+import com.itschool.jpa.repositories.InstrumentRepository;
 import com.itschool.jpa.repositories.OrderRepository;
 import com.itschool.jpa.repositories.UserJpaRepository;
 import com.itschool.jpa.services.OrderService;
@@ -23,6 +25,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private UserJpaRepository userRepository;
+    @Autowired
+    private InstrumentRepository instrumentRepository;
 
     /**
      * Places an order for a specific user
@@ -37,9 +41,28 @@ public class OrderServiceImpl implements OrderService {
         if (userOpt.isPresent()) {
             User user = userOpt.get();
             order.setUser(user);
-            order.setItems(items);
             order.setStatus(OrderStatus.PENDING);
             order.setOrderDate(LocalDate.now());
+
+            List<OrderItem> orderItems = items.stream()
+                    .map(item -> {
+                        OrderItem orderItem = new OrderItem();
+                        orderItem.setOrder(order);
+                        orderItem.setQuantity(item.getQuantity());
+
+                        if (item.getInstrument() == null) {
+                            Instrument instrument = instrumentRepository.findById(item.getInstrument().getId())
+                                    .orElseThrow(() -> new EntityNotFoundException("Instrument not found!"));
+                            orderItem.setInstrument(instrument);
+                        } else {
+                            System.out.println("item.getInstrument() = " + item.getInstrument());
+                            orderItem.setInstrument(item.getInstrument());
+                        }
+
+                        return orderItem;
+                    }).toList();
+
+            order.setItems(orderItems);
             order.calculateTotalAmount();
             items.forEach(OrderItem::updateInstrumentStock);
         } else {
