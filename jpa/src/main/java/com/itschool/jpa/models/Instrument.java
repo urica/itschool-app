@@ -1,11 +1,14 @@
 package com.itschool.jpa.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.itschool.jpa.enums.InstrumentCategory;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "instrument")
@@ -26,5 +29,8 @@ public class Instrument {
     @Column(nullable = false)
     private int stockQuantity;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL)
+    private List<Review> reviews = new ArrayList<>();
 
 }

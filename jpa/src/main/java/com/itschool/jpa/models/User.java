@@ -35,4 +35,8 @@ public class User {
     @JsonManagedReference
     private List<Order> orders = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Review> reviews = new ArrayList<>();
+
 }
