@@ -8,7 +8,9 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "instrument")
@@ -33,4 +35,6 @@ public class Instrument {
     @OneToMany(mappedBy = "instrument", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "wishlist")
+    private Set<User> users = new HashSet<>();
 }
